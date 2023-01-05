@@ -1,0 +1,7 @@
+[MAIN]
+persistent = no
+
+[MESSAGES CONTROL]
+disable = missing-module-docstring,
+        missing-function-docstring,
+        missing-class-docstring,
