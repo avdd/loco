@@ -4,7 +4,7 @@ from werkzeug.serving import run_simple
 
 @Request.application
 def hello(_):
-    return Response('Hello, world!')
+    return Response('<p>Hello, world!</p>', mimetype='text/html')
 
 
 def main():
