@@ -155,7 +155,7 @@ Run again with F5 and confirm it is working.
 Now we need to ensure the dev container installs the dependency.  While the
 install command could be added to the `.devcontainer.json`, I feel that the
 project should function without requiring VS Code at all, so it is better to use
-a `Dockerfile` and build the dependency into the image
+a `Dockerfile` and build the dependency into the image.
 
 In `.devcontainer.json`:
 
@@ -236,3 +236,9 @@ And update the `Dockerfile` to install the driver and firefox:
 ```
 
 Also add a `.gitignore` to ignore the `geckodriver.log` file.
+
+## TODO
+
+- figure out docker deployment
+- split dev and production docker config
+- use GH issues for ongoing management
