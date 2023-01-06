@@ -74,7 +74,7 @@ run it in your `~/.bashrc`.
 
 ```bash
 sudo apt install keychain
-eval $(keychain -q -Q)
+echo 'eval $(keychain -q -Q --eval)' >> ~/.bashrc
 ```
 
 Per https://pscheit.medium.com/use-an-ssh-agent-in-wsl-with-your-ssh-setup-in-windows-10-41756755993e
