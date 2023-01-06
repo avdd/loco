@@ -1,8 +1,11 @@
+import os
 import sys
 import subprocess
 from selenium import webdriver
 
-server = subprocess.Popen([sys.executable, 'main.py'])
+path = os.path.dirname(__file__)
+main = os.path.join(path, 'main.py')
+server = subprocess.Popen([sys.executable, main])
 
 opts = webdriver.FirefoxOptions()
 opts.headless = True
