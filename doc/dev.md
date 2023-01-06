@@ -20,7 +20,9 @@ interface via VS Code and Dev Containers.
 
 **TODO: ensure the workflow works outside of Dev Containers**
 
-### Host setup
+Generally, things work pretty much out of the box, but some notes follow.
+
+### WSL 2 setup
 
 Install WSL 2, Windows Terminal, Docker Desktop and VS Code.
 
@@ -48,11 +50,17 @@ default = <username>
 hostname = <newname>
 ```
 
+### Windows Terminal
+
 My Windows Terminal has some light configuration for keyboard shortcuts and
 theme.  (I found the "Tango Dark" theme the most legible.)
 
+### Docker
+
 For Docker, ensure that it uses the WSL 2 backend, and that WSL 2 integration is
 enable for the distro/instance(s) you plan to use.
+
+### VS Code
 
 In VS code, install the Remote Development extension pack.  This enables working
 with both the WSL2 environment and the docker container.
