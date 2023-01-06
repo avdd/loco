@@ -101,4 +101,7 @@ will be useful later for testing javascript.
 In VS Code, run "Dev Containers: Open folder in container" and it will create
 the docker container and install the VS Code components.
 
-And bootstrapping is complete.
+Next, I added a basic HTTP server on port 8000, ran the file by pressing F5 and
+confirmed it worked by browsing to http://localhost:8000/. 
+
+And bootstrapping is complete!
