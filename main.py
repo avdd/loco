@@ -3,8 +3,13 @@ from werkzeug.serving import run_simple
 
 
 @Request.application
-def hello(_):
-    return Response('<p>Hello, world!</p>', mimetype='text/html')
+def hello(rq: Request):
+    if rq.path == '/':
+        return Response(status=302, headers={'Location': '/home'})
+    elif rq.path == '/home':
+        return Response('<p>Hello, world!</p>', mimetype='text/html')
+    else:
+        return Response('Not found', status=404)
 
 
 def main():
