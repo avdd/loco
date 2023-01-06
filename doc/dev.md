@@ -78,3 +78,27 @@ eval $(keychain -q -Q)
 ```
 
 Per https://pscheit.medium.com/use-an-ssh-agent-in-wsl-with-your-ssh-setup-in-windows-10-41756755993e
+
+## Dev Containers and bootstrapping
+
+I spent quite some time researching the options and eventually realised that the
+simplest config would work: just create a `.devcontainer.json` with an image
+reference and port forward:
+
+```json
+{
+    "image": "mcr.microsoft.com/devcontainers/python:3.11",
+    "forwardPorts": [
+        8000
+    ]
+}
+```
+
+That image includes the VS Code Python extension and various python tools, and
+is based on the "official" Python docker image.  It also includes node.js, which
+will be useful later for testing javascript.
+
+In VS Code, run "Dev Containers: Open folder in container" and it will create
+the docker container and install the VS Code components.
+
+And bootstrapping is complete.
