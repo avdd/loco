@@ -11,4 +11,5 @@ browser.get('http://localhost:8000/')
 p = browser.find_element('tag name', 'p')
 assert p.text == 'Hello, world!'
 
+browser.close()
 server.terminate()
