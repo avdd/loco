@@ -101,7 +101,75 @@ will be useful later for testing javascript.
 In VS Code, run "Dev Containers: Open folder in container" and it will create
 the docker container and install the VS Code components.
 
-Next, I added a basic HTTP server on port 8000, ran the file by pressing F5 and
-confirmed it worked by browsing to http://localhost:8000/. 
+Next, I added a basic HTTP server on port 8000 and ran the file by pressing F5.
+VS Code detects the listening server and prompts to open a browser.  I confirm
+it works.
 
 And bootstrapping is complete!
+
+## Next steps
+
+The VS Code python extension complained about missing docstrings, so configure
+pylint in `.pylintrc`:
+
+```ini
+[MAIN]
+persistent = no
+
+[MESSAGES CONTROL]
+disable = missing-module-docstring,
+        missing-function-docstring,
+        missing-class-docstring
+```
+
+In general I prefer to avoid dependencies where possible, but the HTTP library
+in Python is far too basic to be usable, so I needed to choose a better option.
+`Werkzeug` is the server behind `Flask` so I use that.
+
+First, I `exec` into the docker container and install the dependency:
+
+```bash
+docker ps -a # get the container name or id
+docker exec -itu vscode <container> pip install werkzeug
+```
+
+Now the bootstrap code is much simpler:
+
+```python
+from werkzeug.wrappers import Request, Response
+from werkzeug.serving import run_simple
+
+@Request.application
+def hello(_):
+    return Response('Hello, world!')
+
+def main():
+    run_simple('0.0.0.0', 8000, hello, use_reloader=True, use_debugger=True)
+
+if __name__ == '__main__':
+    main()
+```
+
+Run again with F5 and confirm it is working.
+
+Now we need to ensure the dev container installs the dependency.  While the
+install command could be added to the `.devcontainer.json`, I feel that the
+project should function without requiring VS Code at all, so it is better to use
+a `Dockerfile` and build the dependency into the image
+
+In `.devcontainer.json`:
+
+```diff
+-    "image": "mcr.microsoft.com/devcontainers/python:3.11",
++    "build": {
++        "dockerfile": "./Dockerfile"
++    },
+```
+
+And add a `Dockerfile`:
+
+```Dockerfile
+FROM mcr.microsoft.com/devcontainers/python:3.11
+USER vscode
+RUN pip install --user werkzeug
+```
