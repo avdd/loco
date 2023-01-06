@@ -174,6 +174,8 @@ USER vscode
 RUN pip install --user werkzeug watchdog
 ```
 
+In VS Code, run F1: Dev Containers: Rebuild container.
+
 Because this will be a python + javascript framework, pages will be rendered
 using javascript.  A full integration test will need to be able to view the
 rendered page, so we will need a selenium driver.
@@ -236,6 +238,9 @@ And update the `Dockerfile` to install the driver and firefox:
 ```
 
 Also add a `.gitignore` to ignore the `geckodriver.log` file.
+
+In VS Code, run F1: Dev Containers: Rebuild container, then F5, and the test
+should pass!
 
 ## TODO
 
