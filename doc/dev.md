@@ -64,3 +64,17 @@ enable for the distro/instance(s) you plan to use.
 
 In VS code, install the Remote Development extension pack.  This enables working
 with both the WSL2 environment and the docker container.
+
+### SSH
+
+I tried to use the `ControlMaster` feature of SSH to keep the SSH connection
+open to github and avoid having to enter my SSH key passphrase, but it seems
+github doesn't like that.  Use the `keychain` package to manage ssh-agent, and
+run it in your `~/.bashrc`.
+
+```bash
+sudo apt install keychain
+eval $(keychain -q -Q)
+```
+
+Per https://pscheit.medium.com/use-an-ssh-agent-in-wsl-with-your-ssh-setup-in-windows-10-41756755993e
