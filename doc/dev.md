@@ -171,5 +171,68 @@ And add a `Dockerfile`:
 ```Dockerfile
 FROM mcr.microsoft.com/devcontainers/python:3.11
 USER vscode
-RUN pip install --user werkzeug
+RUN pip install --user werkzeug watchdog
 ```
+
+Because this will be a python + javascript framework, pages will be rendered
+using javascript.  A full integration test will need to be able to view the
+rendered page, so we will need a selenium driver.
+
+Add `test.py`:
+
+```python
+import sys
+import subprocess
+from selenium import webdriver
+
+server = subprocess.Popen([sys.executable, 'main.py'])
+
+opts = webdriver.FirefoxOptions()
+opts.headless = True
+browser = webdriver.Firefox(options=opts)
+browser.get('http://localhost:8000/')
+p = browser.find_element('tag name', 'p')
+assert p.text == 'Hello, world!'
+
+browser.close()
+server.terminate()
+```
+
+Update `main.py` to return HTML:
+
+```diff
+-    return Response('Hello, world!')
++    return Response('<p>Hello, world!</p>', mimetype='text/html')
+```
+
+Add `install-geckodriver.sh` script:
+
+```bash
+#!/bin/bash -eu
+
+JSON_URL='https://api.github.com/repos/mozilla/geckodriver/releases/latest'
+LOCAL_BIN=$HOME/.local/bin
+
+set -x
+
+mkdir -p "$LOCAL_BIN"
+url=$(curl -s "$JSON_URL" | grep -o 'https.*linux64.tar.gz' | head -1)
+curl -sL "$url" | zcat - | tar -C "$LOCAL_BIN" -xf-
+```
+
+And update the `Dockerfile` to install the driver and firefox:
+
+```diff
++
++RUN apt-get update \
++  && DEBIAN_FRONTEND=noninteractive apt-get -qq -y upgrade \
++  && DEBIAN_FRONTEND=noninteractive apt-get -qq -y --no-install-recommends install firefox-esr
++
+ USER vscode
+-RUN pip install --user werkzeug watchdog
++RUN pip install --user werkzeug watchdog selenium
++COPY install-geckodriver.sh /tmp/install-geckodriver.sh
++RUN bash /tmp/install-geckodriver.sh
+```
+
+Also add a `.gitignore` to ignore the `geckodriver.log` file.
