@@ -1,5 +1,5 @@
 ---
-modified: 2023-01-06
+modified: 2023-01-07
 ---
 
 # Development notes
@@ -20,9 +20,9 @@ interface via VS Code and Dev Containers.
 
 **TODO: ensure the workflow works outside of Dev Containers**
 
-Install WSL 2, Windows Terminal, Docker Desktop and VS Code.
+### Host setup
 
-Ensure Docker Desktop uses the WSL 2 backend.
+Install WSL 2, Windows Terminal, Docker Desktop and VS Code.
 
 WSL2 allows for multiple "distros" (e.g. Ubuntu, Debian), but is a bit funny
 about how they are managed and assumes that you will only install a distro
@@ -30,7 +30,7 @@ once.  As each distro is like a "lightweight VM" I wanted the option of
 installing a distro multiple times.  Here are basic instructions for that.
 
 - Install the distro from the store
-- Do any basic configuration (e.g. user, password, sudo)
+- Do any basic configuration (e.g. user, password, sudo, apt)
 - Export the distro to a tar file with `wsl --export <distro> <tarfile>`
 - Stop the distro: `wsl -t <distro>`
 - Unregister the distro `wsl --unregister <distro>`
@@ -50,3 +50,9 @@ hostname = <newname>
 
 My Windows Terminal has some light configuration for keyboard shortcuts and
 theme.  (I found the "Tango Dark" theme the most legible.)
+
+For Docker, ensure that it uses the WSL 2 backend, and that WSL 2 integration is
+enable for the distro/instance(s) you plan to use.
+
+In VS code, install the Remote Development extension pack.  This enables working
+with both the WSL2 environment and the docker container.
