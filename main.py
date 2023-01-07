@@ -3,13 +3,12 @@ from werkzeug.serving import run_simple
 
 
 @Request.application
-def hello(rq: Request):
+def hello(rq: Request):  # pylint: disable=invalid-name
     if rq.path == '/':
         return Response(status=302, headers={'Location': '/home'})
-    elif rq.path == '/home':
+    if rq.path == '/home':
         return Response('<p>Hello, world!</p>', mimetype='text/html')
-    else:
-        return Response('Not found', status=404)
+    return Response('Not found', status=404)
 
 
 def main():

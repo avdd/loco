@@ -5,17 +5,17 @@ from selenium import webdriver
 
 path = os.path.dirname(__file__)
 main = os.path.join(path, 'main.py')
-server = subprocess.Popen([sys.executable, main])
 
-opts = webdriver.FirefoxOptions()
-opts.headless = True
-browser = webdriver.Firefox(options=opts)
-browser.get('http://localhost:8000/')
+with subprocess.Popen([sys.executable, main]) as server:
 
-assert browser.current_url == 'http://localhost:8000/home'
+    opts = webdriver.FirefoxOptions()
+    opts.headless = True
+    with webdriver.Firefox(options=opts) as browser:
+        browser.get('http://localhost:8000/')
 
-p = browser.find_element('tag name', 'p')
-assert p.text == 'Hello, world!'
+        assert browser.current_url == 'http://localhost:8000/home'
 
-browser.close()
-server.terminate()
+        p = browser.find_element('tag name', 'p')
+        assert p.text == 'Hello, world!'
+
+    server.terminate()
