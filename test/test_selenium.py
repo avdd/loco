@@ -1,5 +1,5 @@
-import sys
 import subprocess
+import sys
 import unittest
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
