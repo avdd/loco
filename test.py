@@ -19,6 +19,7 @@ class Test(unittest.TestCase):
     def start_browser(self):
         opts = webdriver.FirefoxOptions()
         opts.headless = True
+        opts.page_load_strategy = 'eager'
         browser = webdriver.Firefox(options=opts)
         self.addCleanup(browser.quit)
         browser.get('http://localhost:8000/')
@@ -39,11 +40,11 @@ class Test(unittest.TestCase):
     def test_skeleton_html(self):
         self.assertRaises(NoSuchElementException, self.get_root)
 
-        # browser.execute_script('StartLoadingForTesting()')
-        # wait = WebDriverWait(browser, timeout=5)
-
-        # p = browser.find_element('tag name', 'p')
-        # assert p.text == 'Hello, world!'
+    def test_page_ready(self):
+        browser = self.browser
+        browser.execute_script('StartLoading()')
+        el = browser.find_element('class name', 'Home')
+        assert el.text == 'Hello, world!'
 
 
 if __name__ == '__main__':
