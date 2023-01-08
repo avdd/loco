@@ -1,12 +1,13 @@
 <script>
     function StartLoading() {
-        setTimeout(AddScript, 100);
+        setTimeout(AddScript, 10);
     }
     function AddScript() {
-        const script = document.createElement('script');
-        script.type = 'module';
-        script.src = './app.js';
-        document.body.appendChild(script);
+        const el = document.createElement('script');
+        const script = `import {Start} from './app.js'; Start();`
+        el.type = 'module';
+        el.textContent = script;
+        document.body.appendChild(el);
     }
     if (! /SELENIUM_TEST/.test(document.cookie))
         StartLoading();

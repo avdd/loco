@@ -1,3 +1,4 @@
+import json
 import os
 from werkzeug.wrappers import Request, Response
 from werkzeug.serving import run_simple
@@ -39,6 +40,10 @@ def hello(rq: Request):  # pylint: disable=invalid-name
         return rq.sendfile('app.js', 'text/javascript')
     if rq.path == '/app.css':
         return rq.sendfile('app.css', 'text/css')
+    if rq.path == '/screen/Home':
+        html = '<p class=Home>Hello, world!</p>'
+        data = {'html': html}
+        return Response(json.dumps(data), mimetype='application/json')
     return Response('Not found', status=404)
 
 
