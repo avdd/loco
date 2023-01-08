@@ -25,12 +25,13 @@ def register(url):
     return register_handler
 
 
-@Request.application
-def app(rq: Request):
-    func = URL_REGISTRY.get(rq.path)
-    if func:
-        return func(rq)
-    return Response('Not found', status=404)
+def create_app(registry):
+    def wsgi_app(rq: Request):
+        func = registry.get(rq.path)
+        if func:
+            return func(rq)
+        return Response('Not found', status=404)
+    return Request.application(wsgi_app)
 
 
 @register('/')
@@ -69,6 +70,7 @@ def run_devel_server():
         kwargs['use_debugger'] = True
         kwargs['use_reloader'] = True
         os.environ['WERKZEUG_DEBUG_PIN'] = 'off'
+    app = create_app(URL_REGISTRY)
     run_simple('0.0.0.0', 8000, app, static_files=static, **kwargs)
 
 

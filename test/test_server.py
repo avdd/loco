@@ -6,28 +6,29 @@ from loco import main
 
 class Test(unittest.TestCase):
 
+    def setUp(self):
+        registry = main.URL_REGISTRY
+        app = main.create_app(registry)
+        self.client = Client(app)
+
     def test_redirects_to_home(self):
-        cli = Client(main.app)
-        rsp = cli.get('/')
+        rsp = self.client.get('/')
         self.assertEqual(rsp.status_code, 302)
         self.assertEqual(rsp.headers.get('location'), '/home')
 
     def test_not_found(self):
-        cli = Client(main.app)
-        rsp = cli.get('/fooooo')
+        rsp = self.client.get('/foooo')
         self.assertEqual(rsp.status_code, 404)
 
     def test_skeleton(self):
         skeleton_html = '<script>'
         main.SKELETON_HTML = skeleton_html
-        cli = Client(main.app)
-        rsp = cli.get('/home')
+        rsp = self.client.get('/home')
         self.assertEqual(rsp.status_code, 200)
         self.assertEqual(rsp.text, skeleton_html)
 
     def test_environment_cookie(self):
-        cli = Client(main.app)
-        rsp = cli.get('/')
+        rsp = self.client.get('/')
         cookie = rsp.headers.get('set-cookie')
         self.assertTrue(cookie)
         self.assertIn('LOCO_ENVIRONMENT=development', cookie)
