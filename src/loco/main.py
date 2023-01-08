@@ -11,12 +11,8 @@ LOCO_ENVIRONMENT = os.environ.get('LOCO_ENVIRONMENT') or 'development'
 SKELETON_HTML = None
 
 
-def relpath(name):
-    return os.path.join(HERE, name)
-
-
 def sendfile(request, name, ctype):
-    path = relpath(name)
+    path = os.path.join(HERE, name)
     return send_file(path, request.environ, mimetype=ctype)
 
 
