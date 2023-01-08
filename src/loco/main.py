@@ -62,7 +62,7 @@ def home_screen(_):
     return Response(json.dumps(data), mimetype='application/json')
 
 
-def main():
+def run_devel_server():
     static = {'/static': HERE}
     kwargs = {}
     if LOCO_ENVIRONMENT == 'development':
@@ -73,4 +73,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    run_devel_server()
