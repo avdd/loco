@@ -1,0 +1,11 @@
+<script>
+    function StartLoading() {
+        setTimeout(AddScript, 100);
+    }
+    function AddScript() {
+        const script = document.createElement('script');
+        script.type = 'module';
+        script.src = './app.js';
+        document.body.appendChild(script);
+    }
+</script>
