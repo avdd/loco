@@ -25,9 +25,6 @@ class Test(unittest.TestCase):
         browser.get('http://localhost:8000/')
         self.browser = browser
 
-    def get_root(self):
-        return self.browser.find_element('id', 'AppRoot')
-
     def setUp(self):
         self.start_server()
         self.start_browser()
@@ -36,9 +33,9 @@ class Test(unittest.TestCase):
         self.assertEqual(self.browser.current_url,
                          'http://localhost:8000/home')
 
-    @unittest.skip('todo')
-    def test_skeleton_html(self):
-        self.assertRaises(NoSuchElementException, self.get_root)
+    def test_skeleton_empty(self):
+        def get_home(): return self.browser.find_element('class name', 'Home')
+        self.assertRaises(NoSuchElementException, get_home)
 
     def test_page_ready(self):
         browser = self.browser
