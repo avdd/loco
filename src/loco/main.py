@@ -13,7 +13,8 @@ URL_REGISTRY = {}
 
 def sendfile(request, name, ctype):
     path = os.path.join(HERE, name)
-    return send_file(path, request.environ, mimetype=ctype)
+    return send_file(path, request.environ, mimetype=ctype,
+                     conditional=False, etag=False)
 
 
 Request.sendfile = sendfile
