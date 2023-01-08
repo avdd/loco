@@ -13,6 +13,11 @@ class Test(unittest.TestCase):
         self.assertEqual(rsp.status_code, 302)
         self.assertEqual(rsp.headers.get('location'), '/home')
 
+    def test_not_found(self):
+        cli = Client(main.hello)
+        rsp = cli.get('/fooooo')
+        self.assertEqual(rsp.status_code, 404)
+
     def test_skeleton(self):
         skeleton_html = '<script>'
         main.SKELETON_HTML = skeleton_html
