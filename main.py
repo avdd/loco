@@ -1,4 +1,3 @@
-import time
 import os
 from werkzeug.wrappers import Request, Response
 from werkzeug.serving import run_simple
@@ -37,8 +36,9 @@ def hello(rq: Request):  # pylint: disable=invalid-name
         rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
         return rsp
     if rq.path == '/app.js':
-        time.sleep(1)
         return rq.sendfile('app.js', 'text/javascript')
+    if rq.path == '/app.css':
+        return rq.sendfile('app.css', 'text/css')
     return Response('Not found', status=404)
 
 

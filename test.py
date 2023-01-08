@@ -50,10 +50,13 @@ class Test(unittest.TestCase):
     def test_has_stylesheet(self):
         browser = self.browser
         browser.execute_script('StartLoading()')
-        script = 'return document.styleSheets.length > 1'
-        self.assertTrue(browser.execute_script(script))
-        script = 'return /app.css/.test(document.styleSheets[1].href)'
-        self.assertTrue(browser.execute_script(script))
+        wait = WebDriverWait(browser, timeout=2)
+        wait.until(lambda x: self.get_home())
+        n = browser.execute_script('return document.styleSheets.length')
+        self.assertGreater(n, 0)
+        script = 'return document.getElementById("AppStyleBundle").textContent'
+        css = browser.execute_script(script)
+        self.assertTrue('.Home' in css)
 
     def test_page_ready(self):
         browser = self.browser
