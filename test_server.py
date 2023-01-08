@@ -20,6 +20,13 @@ class Test(unittest.TestCase):
         self.assertEqual(rsp.status_code, 200)
         self.assertEqual(rsp.text, skeleton_html)
 
+    def test_environment_cookie(self):
+        cli = Client(main.hello)
+        rsp = cli.get('/')
+        cookie = rsp.headers.get('set-cookie')
+        self.assertTrue(cookie)
+        self.assertIn('LOCO_ENVIRONMENT=development', cookie)
+
 
 if __name__ == '__main__':
     unittest.main()
