@@ -34,8 +34,8 @@ class Test(unittest.TestCase):
                          'http://localhost:8000/home')
 
     def test_skeleton_empty(self):
-        def get_home(): return self.browser.find_element('class name', 'Home')
-        self.assertRaises(NoSuchElementException, get_home)
+        self.assertRaises(NoSuchElementException,
+                          lambda: self.browser.find_element('class name', 'Home'))
 
     def test_page_ready(self):
         browser = self.browser
