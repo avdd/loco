@@ -1,14 +1,42 @@
-<script>
-    function StartLoading() {
-        setTimeout(AddScript, 10);
-    }
-    function AddScript() {
-        const el = document.createElement('script');
-        const script = `import {Start} from './static/app.js'; Start();`
-        el.type = 'module';
-        el.textContent = script;
-        document.body.appendChild(el);
-    }
-    if (! /SELENIUM_TEST/.test(document.cookie))
-        StartLoading();
-</script>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Application loading...</title>
+    <style>
+        #LoadingMessage {
+            width: 100%;
+            font-family: monospace;
+            font-size: 24px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+    <p id="LoadingMessage">Application not yet started</p>
+
+    <script>
+        var LoadingMessage;
+        function StartLoading() {
+            LoadingMessage = document.getElementById('LoadingMessage')
+            LoadingMessage.textContent = 'Loading application ...'
+            setTimeout(AddScript, 10);
+        }
+        window.FinishLoading = function FinishLoading() {
+            console.log('Finish loading');
+            LoadingMessage.style.display = 'none';
+            document.title = 'Application loaded';
+        }
+        function AddScript() {
+            const el = document.createElement('script');
+            const module = './static/app.js?t=' + Date.now();
+            const script = `import {Start} from '${module}'; Start();`
+            el.type = 'module';
+            el.textContent = script;
+            document.body.appendChild(el);
+        }
+        if (! /SELENIUM_TEST/.test(document.cookie))
+            StartLoading();
+    </script>

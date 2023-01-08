@@ -1,6 +1,8 @@
 export async function Start() {
     await FetchStyleBundle();
     await FetchHome();
+    if (window.FinishLoading)
+        window.FinishLoading();
 }
 
 async function FetchStyleBundle() {
