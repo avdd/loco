@@ -7,7 +7,11 @@ def hello(rq: Request):  # pylint: disable=invalid-name
     if rq.path == '/':
         return Response(status=302, headers={'Location': '/home'})
     if rq.path == '/home':
-        return Response('<p>Hello, world!</p>', mimetype='text/html')
+        html = '''
+        <script>function StartLoading() {}</script>
+        <p class=Home>Hello, world!
+        '''
+        return Response(html, mimetype='text/html')
     return Response('Not found', status=404)
 
 
