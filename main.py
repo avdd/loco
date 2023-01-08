@@ -27,7 +27,7 @@ Request.sendfile = sendfile
 
 
 @Request.application
-def hello(rq: Request):  # pylint: disable=invalid-name
+def hello(rq: Request):
     if rq.path == '/':
         rsp = Response(status=302, headers={'Location': '/home'})
         rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
