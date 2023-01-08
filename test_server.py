@@ -14,7 +14,7 @@ class Test(unittest.TestCase):
 
     def test_skeleton(self):
         skeleton_html = '<script>'
-        main.skeleton_html = skeleton_html
+        main.SKELETON_HTML = skeleton_html
         cli = Client(main.hello)
         rsp = cli.get('/home')
         self.assertEqual(rsp.status_code, 200)

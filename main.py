@@ -8,6 +8,8 @@ from werkzeug.utils import send_file
 HERE = os.path.dirname(__file__)
 LOCO_ENVIRONMENT = os.environ.get('LOCO_ENVIRONMENT') or 'development'
 
+SKELETON_HTML = None
+
 
 def relpath(name):
     return os.path.join(HERE, name)
@@ -33,7 +35,7 @@ def hello(rq: Request):
         rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
         return rsp
     if rq.path == '/home':
-        rsp = rq.sendfile('skeleton.html', 'text/html')
+        rsp = serve_skeleton_html(rq)
         rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
         return rsp
     if rq.path == '/app.js':
@@ -45,6 +47,14 @@ def hello(rq: Request):
         data = {'html': html}
         return Response(json.dumps(data), mimetype='application/json')
     return Response('Not found', status=404)
+
+
+def serve_skeleton_html(rq):
+    if SKELETON_HTML:
+        rsp = Response(SKELETON_HTML, mimetype='text/html')
+    else:
+        rsp = rq.sendfile('skeleton.html', 'text/html')
+    return rsp
 
 
 def main():
