@@ -47,6 +47,14 @@ class Test(unittest.TestCase):
         browser.execute_script('StartLoading()')
         self.assertRaises(NoSuchElementException, self.get_home)
 
+    def test_has_stylesheet(self):
+        browser = self.browser
+        browser.execute_script('StartLoading()')
+        script = 'return document.styleSheets.length > 1'
+        self.assertTrue(browser.execute_script(script))
+        script = 'return /app.css/.test(document.styleSheets[1].href)'
+        self.assertTrue(browser.execute_script(script))
+
     def test_page_ready(self):
         browser = self.browser
         browser.execute_script('StartLoading()')
