@@ -15,11 +15,6 @@ def relpath(name):
     return os.path.join(HERE, name)
 
 
-def readfile(name):
-    path = relpath(name)
-    return open(path, encoding='UTF8').read()
-
-
 def sendfile(request, name, ctype):
     path = relpath(name)
     return send_file(path, request.environ, mimetype=ctype)
