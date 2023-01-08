@@ -33,27 +33,23 @@ class Test(unittest.TestCase):
         self.assertEqual(self.browser.current_url,
                          'http://localhost:8000/home')
 
+    def get_home(self):
+        return self.browser.find_element('class name', 'Home')
+
     def test_skeleton_empty(self):
-        self.assertRaises(NoSuchElementException,
-                          lambda: self.browser.find_element('class name', 'Home'))
+        self.assertRaises(NoSuchElementException, self.get_home)
 
     def test_start_loading_empty(self):
         browser = self.browser
         browser.execute_script('StartLoading()')
-        self.assertRaises(NoSuchElementException,
-                          lambda: self.browser.find_element('class name', 'Home'))
+        self.assertRaises(NoSuchElementException, self.get_home)
 
     def test_page_ready(self):
         browser = self.browser
         browser.execute_script('StartLoading()')
         wait = WebDriverWait(browser, timeout=2)
-
-        def get_home(browser):
-            return browser.find_element('class name', 'Home')
-
-        wait.until(get_home)
-        el = get_home(browser)
-        assert el.text == 'Hello, world!'
+        wait.until(lambda x: self.get_home())
+        self.assertEqual(self.get_home().text, 'Hello, world!')
 
 
 if __name__ == '__main__':
