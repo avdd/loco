@@ -7,7 +7,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-os.environ['SELENIUM_TEST'] = '1'
+os.environ['LOCO_ENVIRONMENT'] = 'SELENIUM_TEST'
 
 
 class Test(unittest.TestCase):
