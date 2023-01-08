@@ -7,6 +7,9 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 
 
+os.environ['SELENIUM_TEST'] = '1'
+
+
 class Test(unittest.TestCase):
 
     def start_server(self):
@@ -25,6 +28,9 @@ class Test(unittest.TestCase):
         browser.get('http://localhost:8000/')
         self.browser = browser
 
+    def get_home(self):
+        return self.browser.find_element('class name', 'Home')
+
     def setUp(self):
         self.start_server()
         self.start_browser()
@@ -32,9 +38,6 @@ class Test(unittest.TestCase):
     def test_redirects_to_home(self):
         self.assertEqual(self.browser.current_url,
                          'http://localhost:8000/home')
-
-    def get_home(self):
-        return self.browser.find_element('class name', 'Home')
 
     def test_skeleton_empty(self):
         self.assertRaises(NoSuchElementException, self.get_home)

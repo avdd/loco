@@ -6,6 +6,7 @@ from werkzeug.utils import send_file
 
 
 HERE = os.path.dirname(__file__)
+SELENIUM_TEST = os.environ.get('SELENIUM_TEST')
 
 
 def relpath(name):
@@ -28,7 +29,12 @@ Request.sendfile = sendfile
 @Request.application
 def hello(rq: Request):  # pylint: disable=invalid-name
     if rq.path == '/':
-        return Response(status=302, headers={'Location': '/home'})
+        rsp = Response(status=302, headers={'Location': '/home'})
+        if SELENIUM_TEST:
+            rsp.set_cookie('SELENIUM_TEST', '1')
+        else:
+            rsp.delete_cookie('SELENIUM_TEST')
+        return rsp
     if rq.path == '/home':
         return rq.sendfile('skeleton.html', 'text/html')
     if rq.path == '/app.js':

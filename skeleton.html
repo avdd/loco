@@ -8,4 +8,6 @@
         script.src = './app.js';
         document.body.appendChild(script);
     }
+    if (! /SELENIUM_TEST/.test(document.cookie))
+        StartLoading();
 </script>
