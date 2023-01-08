@@ -1,4 +1,3 @@
-import os
 import sys
 import subprocess
 import unittest
@@ -10,10 +9,10 @@ from selenium.webdriver.support.wait import WebDriverWait
 class Test(unittest.TestCase):
 
     def start_server(self):
-        env = {'LOCO_ENVIRONMENT': 'SELENIUM_TEST'}
-        main = os.path.join(os.path.dirname(__file__), 'main.py')
         # pylint: disable=consider-using-with
-        server = subprocess.Popen([sys.executable, main], env=env)
+        args = [sys.executable, '-m', 'loco.main']
+        env = {'LOCO_ENVIRONMENT': 'SELENIUM_TEST'}
+        server = subprocess.Popen(args, env=env)
         self.enterContext(server)
         self.addCleanup(server.terminate)
 

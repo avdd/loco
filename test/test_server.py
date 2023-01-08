@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import patch, mock_open
 from werkzeug.test import Client
 
-import main
+from loco import main
 
 
 class Test(unittest.TestCase):
