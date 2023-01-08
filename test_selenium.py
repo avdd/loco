@@ -7,15 +7,13 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-os.environ['LOCO_ENVIRONMENT'] = 'SELENIUM_TEST'
-
-
 class Test(unittest.TestCase):
 
     def start_server(self):
+        env = {'LOCO_ENVIRONMENT': 'SELENIUM_TEST'}
         main = os.path.join(os.path.dirname(__file__), 'main.py')
         # pylint: disable=consider-using-with
-        server = subprocess.Popen([sys.executable, main])
+        server = subprocess.Popen([sys.executable, main], env=env)
         self.enterContext(server)
         self.addCleanup(server.terminate)
 
