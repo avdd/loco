@@ -4,7 +4,7 @@
     }
     function AddScript() {
         const el = document.createElement('script');
-        const script = `import {Start} from './app.js'; Start();`
+        const script = `import {Start} from './static/app.js'; Start();`
         el.type = 'module';
         el.textContent = script;
         document.body.appendChild(el);

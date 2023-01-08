@@ -38,8 +38,6 @@ def hello(rq: Request):
         rsp = serve_skeleton_html(rq)
         rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
         return rsp
-    if rq.path == '/app.js':
-        return rq.sendfile('app.js', 'text/javascript')
     if rq.path == '/app.css':
         return rq.sendfile('app.css', 'text/css')
     if rq.path == '/screen/Home':
@@ -58,7 +56,12 @@ def serve_skeleton_html(rq):
 
 
 def main():
-    run_simple('0.0.0.0', 8000, hello, use_reloader=True, use_debugger=True)
+    static = {'/static': HERE}
+    kwargs = {}
+    if os.environ.get('LOCO_ENVIRONMENT') == 'development':
+        kwargs['use_debugger'] = True
+        kwargs['use_reloader'] = True
+    run_simple('0.0.0.0', 8000, hello, static_files=static, **kwargs)
 
 
 if __name__ == '__main__':
