@@ -8,12 +8,17 @@ def hello(rq: Request):  # pylint: disable=invalid-name
         return Response(status=302, headers={'Location': '/home'})
     if rq.path == '/home':
         html = '''
-        <script>function StartLoading() {
+        <script>
+        function StartLoading() {
+            setTimeout(AddHome, 100);
+        }
+        function AddHome() {
             const p = document.createElement('p');
             p.textContent = 'Hello, world!'
             p.className = 'Home';
             document.body.appendChild(p);
-        }</script>
+        }
+        </script>
         '''
         return Response(html, mimetype='text/html')
     return Response('Not found', status=404)

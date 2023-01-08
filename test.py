@@ -4,7 +4,7 @@ import subprocess
 import unittest
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
-# from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support.wait import WebDriverWait
 
 
 class Test(unittest.TestCase):
@@ -46,7 +46,13 @@ class Test(unittest.TestCase):
     def test_page_ready(self):
         browser = self.browser
         browser.execute_script('StartLoading()')
-        el = browser.find_element('class name', 'Home')
+        wait = WebDriverWait(browser, timeout=2)
+
+        def get_home(browser):
+            return browser.find_element('class name', 'Home')
+
+        wait.until(get_home)
+        el = get_home(browser)
         assert el.text == 'Hello, world!'
 
 
