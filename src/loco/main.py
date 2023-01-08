@@ -65,13 +65,13 @@ def home_screen(_):
 
 def run_devel_server():
     static = {'/static': HERE}
-    kwargs = {}
+    kwargs = {'static_files': static, 'threaded': True}
     if LOCO_ENVIRONMENT == 'development':
         kwargs['use_debugger'] = True
         kwargs['use_reloader'] = True
         os.environ['WERKZEUG_DEBUG_PIN'] = 'off'
     app = create_app(URL_REGISTRY)
-    run_simple('0.0.0.0', 8000, app, static_files=static, **kwargs)
+    run_simple('0.0.0.0', 8000, app, **kwargs)
 
 
 if __name__ == '__main__':
