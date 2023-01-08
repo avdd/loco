@@ -65,7 +65,7 @@ def home_screen(_):
 def main():
     static = {'/static': HERE}
     kwargs = {}
-    if os.environ.get('LOCO_ENVIRONMENT') == 'development':
+    if LOCO_ENVIRONMENT == 'development':
         kwargs['use_debugger'] = True
         kwargs['use_reloader'] = True
     run_simple('0.0.0.0', 8000, app, static_files=static, **kwargs)
