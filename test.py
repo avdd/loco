@@ -37,6 +37,12 @@ class Test(unittest.TestCase):
         self.assertRaises(NoSuchElementException,
                           lambda: self.browser.find_element('class name', 'Home'))
 
+    def test_start_loading_empty(self):
+        browser = self.browser
+        browser.execute_script('StartLoading()')
+        self.assertRaises(NoSuchElementException,
+                          lambda: self.browser.find_element('class name', 'Home'))
+
     def test_page_ready(self):
         browser = self.browser
         browser.execute_script('StartLoading()')
