@@ -7,8 +7,8 @@ from werkzeug.utils import send_file
 
 HERE = os.path.dirname(__file__)
 LOCO_ENVIRONMENT = os.environ.get('LOCO_ENVIRONMENT') or 'development'
-
 SKELETON_HTML = None
+URL_REGISTRY = {}
 
 
 def sendfile(request, name, ctype):
@@ -19,31 +19,47 @@ def sendfile(request, name, ctype):
 Request.sendfile = sendfile
 
 
+def register(url):
+    def register_handler(func):
+        URL_REGISTRY[url] = func
+    return register_handler
+
+
 @Request.application
 def app(rq: Request):
-    if rq.path == '/':
-        rsp = Response(status=302, headers={'Location': '/home'})
-        rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
-        return rsp
-    if rq.path == '/home':
-        rsp = serve_skeleton_html(rq)
-        rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
-        return rsp
-    if rq.path == '/app.css':
-        return rq.sendfile('app.css', 'text/css')
-    if rq.path == '/screen/Home':
-        html = '<p class=Home>Hello, world!</p>'
-        data = {'html': html}
-        return Response(json.dumps(data), mimetype='application/json')
+    func = URL_REGISTRY.get(rq.path)
+    if func:
+        return func(rq)
     return Response('Not found', status=404)
 
 
-def serve_skeleton_html(rq):
+@register('/')
+def redirect_root(_):
+    rsp = Response(status=302, headers={'Location': '/home'})
+    rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
+    return rsp
+
+
+@register('/home')
+def home(rq):
     if SKELETON_HTML:
         rsp = Response(SKELETON_HTML, mimetype='text/html')
     else:
         rsp = rq.sendfile('skeleton.html', 'text/html')
+    rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
     return rsp
+
+
+@register('/app.css')
+def app_css(rq):
+    return rq.sendfile('app.css', 'text/css')
+
+
+@register('/screen/Home')
+def home_screen(_):
+    html = '<p class=Home>Hello, world!</p>'
+    data = {'html': html}
+    return Response(json.dumps(data), mimetype='application/json')
 
 
 def main():
