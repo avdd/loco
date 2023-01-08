@@ -3,6 +3,7 @@ import subprocess
 import unittest
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.firefox.service import Service
 from selenium.webdriver.support.wait import WebDriverWait
 
 
@@ -20,7 +21,8 @@ class Test(unittest.TestCase):
         opts = webdriver.FirefoxOptions()
         opts.headless = True
         opts.page_load_strategy = 'eager'
-        browser = webdriver.Firefox(options=opts)
+        service = Service(log_path='/tmp/geckodriver.log')
+        browser = webdriver.Firefox(options=opts, service=service)
         self.addCleanup(browser.quit)
         browser.get('http://localhost:8000/')
         self.browser = browser
