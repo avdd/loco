@@ -29,7 +29,7 @@ Request.sendfile = sendfile
 
 
 @Request.application
-def hello(rq: Request):
+def app(rq: Request):
     if rq.path == '/':
         rsp = Response(status=302, headers={'Location': '/home'})
         rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
@@ -61,7 +61,7 @@ def main():
     if os.environ.get('LOCO_ENVIRONMENT') == 'development':
         kwargs['use_debugger'] = True
         kwargs['use_reloader'] = True
-    run_simple('0.0.0.0', 8000, hello, static_files=static, **kwargs)
+    run_simple('0.0.0.0', 8000, app, static_files=static, **kwargs)
 
 
 if __name__ == '__main__':
