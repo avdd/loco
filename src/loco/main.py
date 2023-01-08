@@ -36,7 +36,7 @@ def app(rq: Request):
 @register('/')
 def redirect_root(_):
     rsp = Response(status=302, headers={'Location': '/home'})
-    rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
+    rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT, samesite='Strict')
     return rsp
 
 
@@ -46,7 +46,7 @@ def home(rq):
         rsp = Response(SKELETON_HTML, mimetype='text/html')
     else:
         rsp = rq.sendfile('skeleton.html', 'text/html')
-    rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT)
+    rsp.set_cookie('LOCO_ENVIRONMENT', LOCO_ENVIRONMENT, samesite='Strict')
     return rsp
 
 
