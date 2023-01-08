@@ -9,30 +9,28 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 class Test(unittest.TestCase):
 
-    def start_server(self):
+    @classmethod
+    def setUpClass(cls):
         # pylint: disable=consider-using-with
         args = [sys.executable, '-m', 'loco.main']
         env = {'LOCO_ENVIRONMENT': 'SELENIUM_TEST'}
         server = subprocess.Popen(args, env=env)
-        self.enterContext(server)
-        self.addCleanup(server.terminate)
+        cls.addClassCleanup(server.wait)
+        cls.addClassCleanup(server.terminate)
 
-    def start_browser(self):
         opts = webdriver.FirefoxOptions()
         opts.headless = True
         opts.page_load_strategy = 'eager'
         service = Service(log_path='/tmp/geckodriver.log')
         browser = webdriver.Firefox(options=opts, service=service)
-        self.addCleanup(browser.quit)
-        browser.get('http://localhost:8000/')
-        self.browser = browser
+        cls.addClassCleanup(browser.quit)
+        cls.browser = browser
+
+    def setUp(self):
+        self.browser.get('http://localhost:8000/')
 
     def get_home(self):
         return self.browser.find_element('class name', 'Home')
-
-    def setUp(self):
-        self.start_server()
-        self.start_browser()
 
     def test_redirects_to_home(self):
         self.assertEqual(self.browser.current_url,
@@ -61,7 +59,7 @@ class Test(unittest.TestCase):
         browser = self.browser
         browser.execute_script('StartLoading()')
         wait = WebDriverWait(browser, timeout=2)
-        wait.until(lambda x: self.get_home())
+        wait.until(lambda _: self.get_home())
         self.assertEqual(self.get_home().text, 'Hello, world!')
 
 
