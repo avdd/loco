@@ -68,7 +68,7 @@ def run_devel_server():
     if LOCO_ENVIRONMENT == 'development':
         kwargs['use_debugger'] = True
         kwargs['use_reloader'] = True
-    os.environ['WERKZEUG_DEBUG_PIN'] = 'off'
+        os.environ['WERKZEUG_DEBUG_PIN'] = 'off'
     run_simple('0.0.0.0', 8000, app, static_files=static, **kwargs)
 
 
