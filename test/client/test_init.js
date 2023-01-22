@@ -47,4 +47,12 @@ describe('app', function () {
         expect(doc._styles[0].textContent).toBe(cssText);
     })
 
+    it('fetches body', async function () {
+        const rsp = { html: '<h1>Hello</h1>' }
+        const win = mockWindow(rsp);
+        const data = await FetchHome(win, './home');
+        expect(win.calledArgs.url).toBe('./home');
+        expect(win.calledArgs.options.method).toBe('POST');
+        expect(data.html).toBe(rsp.html);
+    })
 })
