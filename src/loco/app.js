@@ -5,6 +5,11 @@ export async function Start(window, loader) {
         loader.finish();
 }
 
+export async function FetchCss(window, url) {
+    const rsp = await window.fetch(url);
+    return await rsp.text();
+}
+
 async function FetchStyleBundle(doc) {
     const rsp = await fetch('./app.css')
     const css = await rsp.text();
