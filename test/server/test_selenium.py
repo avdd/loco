@@ -51,7 +51,7 @@ class Test(unittest.TestCase):
         wait.until(lambda x: self.get_home())
         n = browser.execute_script('return document.styleSheets.length')
         self.assertGreater(n, 0)
-        script = 'return document.getElementById("AppStyleBundle").textContent'
+        script = 'return document.getElementById("LocoStylesheet").textContent'
         css = browser.execute_script(script)
         self.assertTrue('.Home' in css)
 

@@ -1,41 +1,28 @@
 // @ts-check
 import { FetchCss, AddStyle, FetchHome, AddHome } from '../../src/loco/app.js';
 
-function mockWindow(data) {
+function mockWindow(data, spy) {
+    const resolve = () => Promise.resolve(data);
+    const rsp = { text: resolve, json: resolve };
     return {
         fetch(url, options) {
-            this.calledArgs = { url, options };
-            const rsp = {
-                async text() {
-                    return Promise.resolve(data);
-                },
-                async json() {
-                    return Promise.resolve(data);
-                }
-            }
+            spy.push({ url, options });
             return Promise.resolve(rsp);
         }
     }
 }
 
-function mockDocument() {
-    const _styles = [];
-    const _content = [];
+function mockDocument(spy) {
+    const node = {
+        appendChild(element) {
+            spy.push(element);
+        }
+    }
     return {
-        _styles,
-        _content,
-        head: {
-            appendChild(element) {
-                _styles.push(element);
-            }
-        },
-        body: {
-            appendChild(element) {
-                _content.push(element);
-            }
-        },
-        createElement(name) {
-            return { tag: name }
+        head: node,
+        body: node,
+        createElement(tagName) {
+            return { tagName }
         }
     }
 }
@@ -45,35 +32,41 @@ describe('app', function () {
     it('fetches css', async function () {
         const url = 'css-url';
         const testCss = 'css data';
-        const win = mockWindow(testCss);
+        const spy = []
+        const win = mockWindow(testCss, spy);
         const css = await FetchCss(win, url);
-        expect(win.calledArgs.url).toBe(url);
+        expect(spy[0].url).toBe(url);
         expect(css).toBe(testCss);
     })
 
     it('adds stylesheet', function () {
         const cssText = 'mock css';
-        const doc = mockDocument();
+        const spy = [];
+        const doc = mockDocument(spy);
         AddStyle(doc, cssText);
-        expect(doc._styles[0].textContent).toBe(cssText);
+        const result = spy[0];
+        expect(result.tagName).toBe('style');
+        expect(result.textContent).toBe(cssText);
     })
 
     it('fetches home', async function () {
         const url = 'home-url';
         const rsp = { html: '<h1>Hello</h1>' }
-        const win = mockWindow(rsp);
+        const spy = [];
+        const win = mockWindow(rsp, spy);
         const data = await FetchHome(win, url);
-        expect(win.calledArgs.url).toBe(url);
-        expect(win.calledArgs.options.method).toBe('POST');
+        expect(spy[0].url).toBe(url);
+        expect(spy[0].options.method).toBe('POST');
         expect(data.html).toBe(rsp.html);
     })
 
     it('adds home content', function () {
         const homeContent = '<p>content';
-        const doc = mockDocument();
+        const spy = [];
+        const doc = mockDocument(spy);
         AddHome(doc, homeContent);
-        const result = doc._content[0];
-        expect(result.id).toBe('LocoAppRoot');
+        const result = spy[0];
+        expect(result.tagName).toBe('div');
         expect(result.innerHTML).toBe(homeContent);
     })
 })

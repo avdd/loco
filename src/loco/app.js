@@ -1,7 +1,8 @@
 export async function Start(window, loader) {
     const css = await FetchCss(window, './app.css');
     AddStyle(window.document, css);
-    await FetchHome(window.document);
+    const data = await FetchHome(window, './screen/Home');
+    AddHome(window.document, data.html);
     if (loader && loader.finish)
         loader.finish();
 }
@@ -13,7 +14,7 @@ export async function FetchCss(window, url) {
 
 export function AddStyle(document, cssText) {
     const s = document.createElement('style');
-    s.id = 'AppStyleBundle';
+    s.id = 'LocoStylesheet';
     s.textContent = cssText;
     document.head.appendChild(s);
 }
@@ -25,17 +26,7 @@ export async function FetchHome(window, url) {
 
 export function AddHome(document, html) {
     const el = document.createElement('div');
-    el.id = 'LocoAppRoot';
+    el.id = 'LocoContainer';
     el.innerHTML = html;
     document.body.appendChild(el);
-}
-
-async function FetchHome_(doc) {
-    const rsp = await fetch('./screen/Home', { method: 'POST' });
-    const data = await rsp.json();
-    console.log(data);
-    const root = doc.createElement('div')
-    root.id = 'AppRoot';
-    root.innerHTML = data.html;
-    doc.body.appendChild(root);
 }
