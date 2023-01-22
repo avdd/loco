@@ -6,5 +6,6 @@ RUN apt-get update \
 
 USER vscode
 RUN pip install --user werkzeug watchdog selenium
-COPY install-geckodriver.sh /tmp/install-geckodriver.sh
+RUN echo /workspaces/loco/src > ~/.local/lib/python3.11/site-packages/loco.pth
+COPY tools/install-geckodriver.sh /tmp/install-geckodriver.sh
 RUN bash /tmp/install-geckodriver.sh
