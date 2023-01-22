@@ -18,24 +18,45 @@
     <p id="LoadingMessage">Application not yet started</p>
 
     <script>
-        var LoadingMessage;
-        function StartLoading() {
-            LoadingMessage = document.getElementById('LoadingMessage')
-            LoadingMessage.textContent = 'Loading application ...'
-            setTimeout(AddScript, 10);
-        }
-        window.FinishLoading = function FinishLoading() {
-            LoadingMessage.style.display = 'none';
-            document.title = 'Application loaded';
-        }
-        function AddScript() {
-            const el = document.createElement('script');
-            const module = './static/app.js?t=' + Date.now();
-            const script = `import {Start} from '${module}'; Start();`
-            el.type = 'module';
-            el.textContent = script;
-            document.body.appendChild(el);
-        }
-        if (! /SELENIUM_TEST/.test(document.cookie))
-            StartLoading();
+        (function () {
+            function el() {
+                return document.getElementById('LoadingMessage');
+            }
+            window.__LOCO_LOADER = {
+                start() {
+                    el().textContent = 'Loading application ...';
+                },
+                finish() {
+                    el().style.display = 'none';
+                    document.title = 'Application loaded';
+                }
+            }
+        })();
+
+        (function () {
+
+            function addScript() {
+                const url = './static/app.js?t=' + Date.now();
+                const impline = `import {Start} from '${url}'`;
+                const startline = `Start(window, window.__LOCO_LOADER)`;
+                const script = `${impline}; ${startline}`;
+                const el = document.createElement('script');
+                el.type = 'module';
+                el.textContent = script;
+                document.body.appendChild(el);
+            }
+
+            function start() {
+                const loader = window.__LOCO_LOADER;
+                if (loader && loader.start)
+                    loader.start();
+                addScript();
+            }
+
+            if (/SELENIUM_TEST/.test(document.cookie))
+                window.__LOCO_SELENIUM_START = start;
+            else
+                setTimeout(start, 10);
+        })()
+
     </script>
