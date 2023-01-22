@@ -61,4 +61,12 @@ describe('app', function () {
         expect(data.html).toBe(rsp.html);
     })
 
+    it('adds home content', function () {
+        const homeContent = '<p>content';
+        const doc = mockDocument();
+        AddHome(doc, homeContent);
+        const result = doc._content[0];
+        expect(result.id).toBe('LocoAppRoot');
+        expect(result.innerHTML).toBe(homeContent);
+    })
 })
