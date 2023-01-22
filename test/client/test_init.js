@@ -36,10 +36,11 @@ function mockDocument() {
 describe('app', function () {
 
     it('fetches css', async function () {
+        const url = 'css-url';
         const testCss = 'css data';
         const win = mockWindow(testCss);
-        const css = await FetchCss(win, 'url');
-        expect(win.calledArgs.url).toBe('url');
+        const css = await FetchCss(win, url);
+        expect(win.calledArgs.url).toBe(url);
         expect(css).toBe(testCss);
     })
 
@@ -50,12 +51,14 @@ describe('app', function () {
         expect(doc._styles[0].textContent).toBe(cssText);
     })
 
-    it('fetches body', async function () {
+    it('fetches home', async function () {
+        const url = 'home-url';
         const rsp = { html: '<h1>Hello</h1>' }
         const win = mockWindow(rsp);
-        const data = await FetchHome(win, './home');
-        expect(win.calledArgs.url).toBe('./home');
+        const data = await FetchHome(win, url);
+        expect(win.calledArgs.url).toBe(url);
         expect(win.calledArgs.options.method).toBe('POST');
         expect(data.html).toBe(rsp.html);
     })
+
 })
