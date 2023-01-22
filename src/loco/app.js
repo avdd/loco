@@ -18,7 +18,12 @@ export function AddStyle(document, cssText) {
     document.head.appendChild(s);
 }
 
-async function FetchHome(doc) {
+export async function FetchHome(window, url) {
+    const rsp = await window.fetch(url, { method: 'POST' });
+    return await rsp.json();
+}
+
+async function FetchHome_(doc) {
     const rsp = await fetch('./screen/Home', { method: 'POST' });
     const data = await rsp.json();
     console.log(data);

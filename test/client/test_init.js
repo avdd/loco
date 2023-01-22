@@ -1,5 +1,5 @@
 // @ts-check
-import { FetchCss, AddStyle } from '../../src/loco/app.js';
+import { FetchCss, AddStyle, FetchHome } from '../../src/loco/app.js';
 
 function mockWindow(data) {
     return {
@@ -7,6 +7,9 @@ function mockWindow(data) {
             this.calledArgs = { url, options };
             const rsp = {
                 async text() {
+                    return Promise.resolve(data);
+                },
+                async json() {
                     return Promise.resolve(data);
                 }
             }
