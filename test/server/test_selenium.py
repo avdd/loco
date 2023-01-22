@@ -41,23 +41,23 @@ class Test(unittest.TestCase):
 
     def test_start_loading_empty(self):
         browser = self.browser
-        browser.execute_script('StartLoading()')
+        browser.execute_script('window.__LOCO_SELENIUM_START()')
         self.assertRaises(NoSuchElementException, self.get_home)
 
     def test_has_stylesheet(self):
         browser = self.browser
-        browser.execute_script('StartLoading()')
+        browser.execute_script('window.__LOCO_SELENIUM_START()')
         wait = WebDriverWait(browser, timeout=2)
         wait.until(lambda x: self.get_home())
         n = browser.execute_script('return document.styleSheets.length')
         self.assertGreater(n, 0)
-        script = 'return document.getElementById("AppStyleBundle").textContent'
+        script = 'return document.getElementById("LocoStylesheet").textContent'
         css = browser.execute_script(script)
         self.assertTrue('.Home' in css)
 
     def test_page_ready(self):
         browser = self.browser
-        browser.execute_script('StartLoading()')
+        browser.execute_script('window.__LOCO_SELENIUM_START()')
         wait = WebDriverWait(browser, timeout=2)
         wait.until(lambda _: self.get_home())
         self.assertEqual(self.get_home().text, 'Hello, world!')
