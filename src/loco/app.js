@@ -1,5 +1,6 @@
 export async function Start(window, loader) {
-    await FetchStyleBundle(window.document);
+    const css = await FetchCss(window, './app.css');
+    AddStyle(window.document, css);
     await FetchHome(window.document);
     if (loader && loader.finish)
         loader.finish();
@@ -15,15 +16,6 @@ export function AddStyle(document, cssText) {
     s.id = 'AppStyleBundle';
     s.textContent = cssText;
     document.head.appendChild(s);
-}
-
-async function FetchStyleBundle(doc) {
-    const rsp = await fetch('./app.css')
-    const css = await rsp.text();
-    const s = doc.createElement('style');
-    s.id = 'AppStyleBundle';
-    s.textContent = css;
-    doc.head.appendChild(s);
 }
 
 async function FetchHome(doc) {
