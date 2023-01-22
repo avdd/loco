@@ -41,12 +41,12 @@ class Test(unittest.TestCase):
 
     def test_start_loading_empty(self):
         browser = self.browser
-        browser.execute_script(f'window.__LOCO_SELENIUM_START()')
+        browser.execute_script('window.__LOCO_SELENIUM_START()')
         self.assertRaises(NoSuchElementException, self.get_home)
 
     def test_has_stylesheet(self):
         browser = self.browser
-        browser.execute_script(f'window.__LOCO_SELENIUM_START()')
+        browser.execute_script('window.__LOCO_SELENIUM_START()')
         wait = WebDriverWait(browser, timeout=2)
         wait.until(lambda x: self.get_home())
         n = browser.execute_script('return document.styleSheets.length')
@@ -57,7 +57,7 @@ class Test(unittest.TestCase):
 
     def test_page_ready(self):
         browser = self.browser
-        browser.execute_script(f'window.__LOCO_SELENIUM_START()')
+        browser.execute_script('window.__LOCO_SELENIUM_START()')
         wait = WebDriverWait(browser, timeout=2)
         wait.until(lambda _: self.get_home())
         self.assertEqual(self.get_home().text, 'Hello, world!')
