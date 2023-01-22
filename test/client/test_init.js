@@ -1,5 +1,5 @@
 // @ts-check
-import { FetchCss, AddStyle, FetchHome, AddHome } from '../../src/loco/app.js';
+import App from '../../src/loco/app.js';
 
 function mockWindow(data, spy) {
     const resolve = () => Promise.resolve(data);
@@ -34,7 +34,7 @@ describe('app', function () {
         const testCss = 'css data';
         const spy = []
         const win = mockWindow(testCss, spy);
-        const css = await FetchCss(win, url);
+        const css = await App.FetchCss(win, url);
         expect(spy[0].url).toBe(url);
         expect(css).toBe(testCss);
     })
@@ -43,7 +43,7 @@ describe('app', function () {
         const cssText = 'mock css';
         const spy = [];
         const doc = mockDocument(spy);
-        AddStyle(doc, cssText);
+        App.AddStyle(doc, cssText);
         const result = spy[0];
         expect(result.tagName).toBe('style');
         expect(result.textContent).toBe(cssText);
@@ -54,7 +54,7 @@ describe('app', function () {
         const rsp = { html: '<h1>Hello</h1>' }
         const spy = [];
         const win = mockWindow(rsp, spy);
-        const data = await FetchHome(win, url);
+        const data = await App.FetchHome(win, url);
         expect(spy[0].url).toBe(url);
         expect(spy[0].options.method).toBe('POST');
         expect(data.html).toBe(rsp.html);
@@ -64,7 +64,7 @@ describe('app', function () {
         const homeContent = '<p>content';
         const spy = [];
         const doc = mockDocument(spy);
-        AddHome(doc, homeContent);
+        App.AddHome(doc, homeContent);
         const result = spy[0];
         expect(result.tagName).toBe('div');
         expect(result.innerHTML).toBe(homeContent);

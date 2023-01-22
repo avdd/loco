@@ -1,4 +1,12 @@
-export async function Start(window, loader) {
+export default {
+    Start,
+    FetchCss,
+    FetchHome,
+    AddStyle,
+    AddHome,
+}
+
+async function Start(window, loader) {
     const css = await FetchCss(window, './app.css');
     AddStyle(window.document, css);
     const data = await FetchHome(window, './screen/Home');
@@ -7,24 +15,24 @@ export async function Start(window, loader) {
         loader.finish();
 }
 
-export async function FetchCss(window, url) {
+async function FetchCss(window, url) {
     const rsp = await window.fetch(url);
     return await rsp.text();
 }
 
-export function AddStyle(document, cssText) {
+async function FetchHome(window, url) {
+    const rsp = await window.fetch(url, { method: 'POST' });
+    return await rsp.json();
+}
+
+function AddStyle(document, cssText) {
     const s = document.createElement('style');
     s.id = 'LocoStylesheet';
     s.textContent = cssText;
     document.head.appendChild(s);
 }
 
-export async function FetchHome(window, url) {
-    const rsp = await window.fetch(url, { method: 'POST' });
-    return await rsp.json();
-}
-
-export function AddHome(document, html) {
+function AddHome(document, html) {
     const el = document.createElement('div');
     el.id = 'LocoContainer';
     el.innerHTML = html;

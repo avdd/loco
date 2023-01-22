@@ -37,8 +37,8 @@
 
             function addScript() {
                 const url = './static/app.js?t=' + Date.now();
-                const impline = `import {Start} from '${url}'`;
-                const startline = `Start(window, window.__LOCO_LOADER)`;
+                const impline = `import App from '${url}'`;
+                const startline = `App.Start(window, window.__LOCO_LOADER)`;
                 const script = `${impline}; ${startline}`;
                 const el = document.createElement('script');
                 el.type = 'module';
