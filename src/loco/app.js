@@ -23,6 +23,13 @@ export async function FetchHome(window, url) {
     return await rsp.json();
 }
 
+export function AddHome(document, html) {
+    const el = document.createElement('div');
+    el.id = 'LocoAppRoot';
+    el.innerHTML = html;
+    document.body.appendChild(el);
+}
+
 async function FetchHome_(doc) {
     const rsp = await fetch('./screen/Home', { method: 'POST' });
     const data = await rsp.json();

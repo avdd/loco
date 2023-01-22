@@ -1,5 +1,5 @@
 // @ts-check
-import { FetchCss, AddStyle, FetchHome } from '../../src/loco/app.js';
+import { FetchCss, AddStyle, FetchHome, AddHome } from '../../src/loco/app.js';
 
 function mockWindow(data) {
     return {
@@ -20,11 +20,18 @@ function mockWindow(data) {
 
 function mockDocument() {
     const _styles = [];
+    const _content = [];
     return {
         _styles,
+        _content,
         head: {
             appendChild(element) {
                 _styles.push(element);
+            }
+        },
+        body: {
+            appendChild(element) {
+                _content.push(element);
             }
         },
         createElement(name) {
