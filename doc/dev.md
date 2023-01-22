@@ -18,8 +18,6 @@ The combination feels like a sweet spot.  The development tools are robustly
 encapsulated in a Linux environment via Docker, but with a first class user
 interface via VS Code and Dev Containers.
 
-**TODO: ensure the workflow works outside of Dev Containers**
-
 Generally, things work pretty much out of the box, but some notes follow.
 
 ### WSL 2 setup
@@ -242,8 +240,6 @@ Also add a `.gitignore` to ignore the `geckodriver.log` file.
 In VS Code, run F1: Dev Containers: Rebuild container, then F5, and the test
 should pass!
 
-## TODO
+## Further work
 
-- figure out docker deployment
-- split dev and production docker config
-- use GH issues for ongoing management
+Tracked in issues
