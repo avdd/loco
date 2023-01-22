@@ -4,5 +4,6 @@
     },
     "forwardPorts": [
         8000
-    ]
+    ],
+    "postCreateCommand": "./tools/dev-setup.sh"
 }
