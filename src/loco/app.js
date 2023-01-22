@@ -10,12 +10,12 @@ export async function FetchCss(window, url) {
     return await rsp.text();
 }
 
-// export function AddStyle(document, cssText) {
-//     const s = document.createElement('style');
-//     s.id = 'AppStyleBundle';
-//     s.textContent = cssText;
-//     document.head.appendChild(s);
-// }
+export function AddStyle(document, cssText) {
+    const s = document.createElement('style');
+    s.id = 'AppStyleBundle';
+    s.textContent = cssText;
+    document.head.appendChild(s);
+}
 
 async function FetchStyleBundle(doc) {
     const rsp = await fetch('./app.css')
